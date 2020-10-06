@@ -13,7 +13,6 @@ app.use(cors());
 const mongoString = 'mongodb+srv://aconde:BDMongoAtlas@cluster0.vo3xv.mongodb.net/backlog?retryWrites=true&w=majority';
 MongoClient.connect(mongoString, { useUnifiedTopology: true }, (err, client) => {
     if (err) return console.error(err);
-    console.log('Connected to Database');
     const db = client.db('guestbook');
     const gBookCollection = db.collection('guestbook');
     app.get('/api/guestbook', (req, res) => {
