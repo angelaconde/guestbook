@@ -10,7 +10,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-const mongoString = 'mongodb+srv://aconde:BDMongoAtlas@cluster0.vo3xv.mongodb.net/backlog?retryWrites=true&w=majority';
+const mongoString = 'mongodb+srv://guest:guest@cluster0.vo3xv.mongodb.net/guestbook?retryWrites=true&w=majority';
+
+class Comment {
+    constructor(nombre, email, mensaje) {
+        this.nombre = nombre;
+        this.email = email;
+        this.mensaje = mensaje;
+        this.fecha = new Date();
+    }
+}
+
 MongoClient.connect(mongoString, { useUnifiedTopology: true }, (err, client) => {
     if (err) return console.error(err);
     const db = client.db('guestbook');
@@ -23,10 +33,10 @@ MongoClient.connect(mongoString, { useUnifiedTopology: true }, (err, client) => 
             .catch(error => console.error(error));
     });
     app.post('/api/guestbook', (req, res) => {
-        gBookCollection.insertOne(req.body)
+        var comentario = new Comment(req.body.nombre, req.body.email, req.body.mensaje);
+        gBookCollection.insertOne(comentario)
             .then(result => {
                 res.send(true);
-                console.log(req.body);
             })
             .catch(error => console.error(error));
     })
